@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-Future<Album> fetchAlbum() async {
+Future<Album> fetchAlbum(int postNum) async {
   final response =
-  await http.get('https://jsonplaceholder.typicode.com/albums/1');
-
+  await http.get('https://jsonplaceholder.typicode.com/albums/$postNum');
+  print ("postNum=$postNum");
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
@@ -78,13 +78,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _counter = 1;
   Future<Album> futureAlbum;
 
   @override
   void initState() {
     super.initState();
-    futureAlbum = fetchAlbum();
+    futureAlbum = fetchAlbum(_counter*2);
   }
 
   void _incrementCounter() {
@@ -95,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      futureAlbum = fetchAlbum(_counter);
     });
   }
 
